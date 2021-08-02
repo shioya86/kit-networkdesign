@@ -10,8 +10,17 @@ void main()
 {
   /* 課題1 */
   auto fout = File("data/sample1.dat", "w");
-  for(real i=1; i<=serv_rate*1.5; i*=1.5){
+  for(real i=10; i<=serv_rate; i*=1.3)
+  {
     fout.writeln(calc1(i));
+  }
+
+  /* 課題1(理論値) */
+  auto fout2 = File("data/theor1.dat", "w");
+  for(real i=10; i<=serv_rate; i*=1.3)
+  {
+    real val = 1.0/( serv_rate*(1.0-i/serv_rate) );
+    fout2.writeln( format("%e %e", i/serv_rate, val) );
   }
   /* 課題2 */
   //calc2();
