@@ -9,21 +9,32 @@ const real serv_rate = 100_000; 	// サービス率: μ
 void main()
 {
   /* 課題1 */
+  writeln("> task1");
   auto fout = File("data/sample1.dat", "w");
-  for(real i=10; i<=serv_rate; i*=1.3)
+  for(real i=50_000; i<=serv_rate; i*=1.01)
   {
-    fout.writeln(calc1(i));
+    fout.writeln( calc1(i) );
   }
 
   /* 課題1(理論値) */
+  writeln("> task2");
   auto fout2 = File("data/theor1.dat", "w");
-  for(real i=10; i<=serv_rate; i*=1.3)
+  for(real i=50_000; i<=serv_rate; i*=1.01)
   {
     real val = 1.0/( serv_rate*(1.0-i/serv_rate) );
     fout2.writeln( format("%e %e", i/serv_rate, val) );
   }
   /* 課題2 */
+  writeln("> task3");
   //calc2();
+
+  /* 課題2(M/M/1/K) */
+  writeln("> task4");
+  auto fout4 = File("data/sample3.dat", "w");
+  for(real i=50_000; i<=serv_rate*10; i*=1.1)
+  {
+    fout4.writeln( calc3(i, 20) );
+  }
 }
 
 
@@ -129,4 +140,62 @@ string calc1(real arr_time)
 void calc2()
 {
 
+}
+
+// M/M/1/K 待ち行列システム
+string calc3(real arr_time, uint k )
+{
+  real[] ploss; 
+  real[] ans;
+  foreach(i; 0..n)
+  {
+    DList!(Packet) q; 	// パケット待ちキュー
+    uint loss;
+    real w_tmp 	= 0.0; 	// パケットの queue における滞在時間の総和
+    real at 		= 0.0; 	// 到着時間軸
+    real dt 		= 0.0; 	// 退去時間軸
+    uint sample; 				// サンプルパケット数
+
+    while (  sample < packet_len )
+    {
+      if (q.empty() || at<dt)
+      {
+        /* パケットの発生 */
+        Packet curr_packet = Packet(at, getArrvintr(serv_rate, getRndRate()));
+        if (q.array().length==k)
+        {
+          /* パケットロス */
+          loss++;
+        }
+        else if(q.empty)
+        {
+          q.insertFront(curr_packet);
+          dt = at + curr_packet.service_time;
+        }
+        else
+        {
+          q.insertFront(curr_packet);
+        }
+        at += getServDistr(arr_time, getRndRate());
+      }
+      else
+      {
+
+        /* パケットの退去 */
+        const auto curr_packet = q.back();
+        q.removeBack();
+        w_tmp += dt - curr_packet.arrival_time;
+
+        sample++;
+        if (!q.empty())
+        {
+          dt += q.back().service_time;
+        }
+      }
+    }
+    ploss ~= loss.to!real / (sample + loss);
+    ans ~= w_tmp/sample;
+  }
+  // return format("%e %e", arr_time/serv_rate, ans.calcSampleMean());
+  return format("%e %e", arr_time/serv_rate, ploss.calcSampleMean() );
 }
