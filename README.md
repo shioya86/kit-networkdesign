@@ -20,6 +20,7 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
 <p align="center">
   <img src="data/sample1.png">
 </p>
+
 ## IPP/M/1/K 待ち行列システムのシミュレーション
 パケットの到着に関する確率仮定がパラメータ(<img src="https://latex.codecogs.com/gif.latex?\lambda_{ON},\alpha_1,\alpha_2" />)
 の **IPP(Interrupted Poisson Process)** に従う場合を考える. この過程の概要は以下の通りである.
