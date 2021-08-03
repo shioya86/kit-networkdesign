@@ -10,5 +10,5 @@ plot 'data/sample1.dat' with errorbars  pt 6 ps 0, 'data/sample1.dat' with lines
 set title 'M/M/1待ち行列システムの平均滞在時間の理論値'
 set xlabel '利用率ρ'
 set ylabel 'E[T]'
-plot 'data/theor1.dat' with lines
+plot 'data/sample2.dat' with lines
 unset multiplot
