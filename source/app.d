@@ -1,10 +1,10 @@
 import std;
 import core.thread;
 auto rnd = Random(0);
-const int packet_len = 100_000; 	// 標本区間長
+const int packet_len = 100_000;   // 標本区間長
 const int n = 10;                 // 標本個数
-const real serv_rate = 100_000; 	// サービス率: μ
-// const real arr_time = 1_000; 	// 平均到着率: λ
+const real serv_rate = 100_000;   // サービス率: μ
+// const real arr_time = 1_000;   // 平均到着率: λ
 
 void main()
 {
@@ -41,10 +41,10 @@ void main()
 // パケット
 struct Packet
 {
-  real arrival_time; 		// 客の到着
-  real service_time; 		// 客の退去
+  real arrival_time;    // 客の到着
+  real service_time;    // 客の退去
 
-  /* packet* next; 			// 次のパケット(DListで管理するため不要) */
+  /* packet* next;      // 次のパケット(DListで管理するため不要) */
 }
 
 // 0 ~ 1 rnd
@@ -85,11 +85,11 @@ string calc1(real arr_time)
 
   foreach(i; 0..n)
   {
-    DList!(Packet) q; 	// パケット待ちキュー
-    real w_tmp 	= 0.0; 	// パケットの queue における滞在時間の総和
-    real at 		= 0.0; 	// 到着時間軸
-    real dt 		= 0.0; 	// 退去時間軸
-    uint sample; 				// サンプルパケット数
+    DList!(Packet) q;   // パケット待ちキュー
+    real w_tmp 	= 0.0;  // パケットの queue における滞在時間の総和
+    real at 		= 0.0;  // 到着時間軸
+    real dt 		= 0.0;  // 退去時間軸
+    uint sample;        // サンプルパケット数
 
     while (  sample < packet_len )
     {
@@ -149,12 +149,12 @@ string calc3(real arr_time, uint k )
   real[] ans;
   foreach(i; 0..n)
   {
-    DList!(Packet) q; 	// パケット待ちキュー
+    DList!(Packet) q;   // パケット待ちキュー
     uint loss;
-    real w_tmp 	= 0.0; 	// パケットの queue における滞在時間の総和
-    real at 		= 0.0; 	// 到着時間軸
-    real dt 		= 0.0; 	// 退去時間軸
-    uint sample; 				// サンプルパケット数
+    real w_tmp 	= 0.0;  // パケットの queue における滞在時間の総和
+    real at 		= 0.0;  // 到着時間軸
+    real dt 		= 0.0;  // 退去時間軸
+    uint sample;        // サンプルパケット数
 
     while (  sample < packet_len )
     {
