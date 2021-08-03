@@ -5,6 +5,7 @@ import system;
 
 void main()
 {
+
   /* 課題1 */
   writeln("> task1");
   auto fout = File("data/sample1.dat", "w");
@@ -29,9 +30,9 @@ void main()
   auto fout3 = File("data/sample2.dat", "w");
   for(real i=50_000; i<=serv_rate*10; i*=1.1)
   {
-    fout3.writeln( calc2(i, 10, 0.6, 0.3) );
+    fout3.writeln( calc2(i, 10, 0.3, 0.2) );
   }
-
+  
 
   /* 課題2(M/M/1/K) */
   writeln("> task4");

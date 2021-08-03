@@ -68,6 +68,7 @@ string calc1(real arr_time)
 // IPP/M/1/K 待ち行列システム
 string calc2(real arr_time, uint k, real a1, real a2)
 {
+  real arr_time_on = arr_time*(a1+a2)/a2;
   real[] ploss; 
   real[] ans;
   bool stat;            // パケット到着のON/OFF状態
@@ -111,7 +112,7 @@ string calc2(real arr_time, uint k, real a1, real a2)
         {
           q.insertFront(curr_packet);
         }
-        at += getServDistr(arr_time, getRndRate());
+        at += getServDistr(arr_time_on, getRndRate());
       }
       else
       {
@@ -131,8 +132,9 @@ string calc2(real arr_time, uint k, real a1, real a2)
     ploss ~= loss.to!real / (sample + loss);
     ans ~= w_tmp/sample;
   }
-  // return format("%e %e", arr_time/serv_rate, ans.calcSampleMean());
-  return format("%e %e", arr_time/serv_rate, ploss.calcSampleMean() );
+  return format("%e %e", 
+    arr_time/serv_rate, 
+    ans.calcSampleMean()/ploss.calcSampleMean());
 }
 
 // M/M/1/K 待ち行列システム
@@ -190,5 +192,7 @@ string calc3(real arr_time, uint k )
     ans ~= w_tmp/sample;
   }
   // return format("%e %e", arr_time/serv_rate, ans.calcSampleMean());
-  return format("%e %e", arr_time/serv_rate, ploss.calcSampleMean() );
+  return format("%e %e", 
+    arr_time/serv_rate, 
+    ans.calcSampleMean()/ploss.calcSampleMean() );
 }
