@@ -2,7 +2,7 @@ import std;
 import core.thread;
 auto rnd = Random(0);
 const int packet_len = 100_000; 	// 標本区間長
-const int n = 10; 								// 標本個数
+const int n = 10;                 // 標本個数
 const real serv_rate = 100_000; 	// サービス率: μ
 // const real arr_time = 1_000; 	// 平均到着率: λ
 
@@ -33,7 +33,7 @@ void main()
   auto fout4 = File("data/sample3.dat", "w");
   for(real i=50_000; i<=serv_rate*10; i*=1.1)
   {
-    fout4.writeln( calc3(i, 20) );
+    fout4.writeln( calc3(i, 10) );
   }
 }
 
@@ -137,7 +137,7 @@ string calc1(real arr_time)
 
 
 // IPP/M/1/K 待ち行列システム
-void calc2()
+void calc2(real arr_time, uint k)
 {
 
 }
