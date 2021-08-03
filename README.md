@@ -17,9 +17,9 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
 以上の条件のもと, <img src="https://latex.codecogs.com/gif.latex?\bar{w}(n)" />, 95\%信頼区間と利用率<img src="https://latex.codecogs.com/gif.latex?\rho" />
 の関係を図示する.
 その際, 待ち行列理論から解析的に求まる値(式(38))と比較, 考察する.
-
-<img src="data/sample1.png">
-
+<p align="center">
+  <img src="data/sample1.png">
+</p>
 ## IPP/M/1/K 待ち行列システムのシミュレーション
 パケットの到着に関する確率仮定がパラメータ(<img src="https://latex.codecogs.com/gif.latex?\lambda_{ON},\alpha_1,\alpha_2" />)
 の **IPP(Interrupted Poisson Process)** に従う場合を考える. この過程の概要は以下の通りである.
@@ -37,8 +37,9 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
 (b) M/M/1/K システムとの性能比較について, **各自適当に課題を設定してデータ取得, 考察**. なおポアソン過程のパラメータ
 <img src="https://latex.codecogs.com/gif.latex?\lambda" /> と, IPPの平均トラヒック量<img src="https://latex.codecogs.com/gif.latex?\bar{\lambda}" />
 は等しくする. すなわち,
-
-<img src="https://latex.codecogs.com/gif.latex?\lambda=\bar{\lambda}=\lambda_{ON}\times\frac{1/\alpha_1}{1/\alpha_1+1/\alpha_2}=\frac{\lambda_{ON}\alpha_2}{\alpha_1+\alpha_2}" />
-
-<img src="data/sample2.png">
-
+<p align="center">
+  <img  src="https://latex.codecogs.com/gif.latex?\lambda=\bar{\lambda}=\lambda_{ON}\times\frac{1/\alpha_1}{1/\alpha_1+1/\alpha_2}=\frac{\lambda_{ON}\alpha_2}{\alpha_1+\alpha_2}" />
+</p>
+<p align="center">
+  <img src="data/sample2.png">
+</p>
