@@ -37,6 +37,7 @@ string calc1(real arr_time)
           q.insertFront(curr_packet);
         }
 
+        /* 次のパケットの到着時間 */
         at += getServDistr(arr_time, getRndRate());
       }
       else
@@ -50,6 +51,7 @@ string calc1(real arr_time)
         sample++;
         if (!q.empty())
         {
+          /* 先頭パケットの退去時間 */
           dt += q.back().service_time;
         }
       }
