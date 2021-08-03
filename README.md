@@ -28,7 +28,7 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
   - ON状態の場合, パケットの到着はパラメータ<img src="https://latex.codecogs.com/gif.latex?\lambda_{ON}" />のポアソン過程に従う.
   - OFF状態の場合, パケット到着はないものとする.
 - ある時点の状態変化は ON(OFF) にある場合, パラメータ<img src="https://latex.codecogs.com/gif.latex?\alpha_1(\alpha_2)" />でOFF(ON)に遷移する.
-  - 平均ON(OFF)区間は, img src="https://latex.codecogs.com/gif.latex?1/\alpha_1(1/\alpha_2)" />となる.
+  - 平均ON(OFF)区間は, <img src="https://latex.codecogs.com/gif.latex?1/\alpha_1(1/\alpha_2)" />となる.
  
 本システムにおいて以下を実現する.
 
