@@ -24,9 +24,13 @@ void main()
   }
 
 
-  /* 課題2 */
+  /* 課題2(IPP/M/1/K) */
   writeln("> task3");
-  //calc2();
+  auto fout3 = File("data/sample2.dat", "w");
+  for(real i=50_000; i<=serv_rate*10; i*=1.1)
+  {
+    fout3.writeln( calc2(i, 10, 0.6, 0.3) );
+  }
 
 
   /* 課題2(M/M/1/K) */
