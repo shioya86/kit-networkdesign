@@ -89,12 +89,12 @@ string calc1(real arr_time)
 
         if(q.empty)
         {
-          q.insert(curr_packet);
+          q.insertFront(curr_packet);
           dt = at + curr_packet.service_time;
         }
         else
         {
-          q.insert(curr_packet);
+          q.insertFront(curr_packet);
         }
 
         at += getServDistr(arr_time, getRndRate());
@@ -103,14 +103,14 @@ string calc1(real arr_time)
       {
 
         /* パケットの退去 */
-        const auto curr_packet = q.removeAny();
+        const auto curr_packet = q.back();
+        q.removeBack();
         w_tmp += dt - curr_packet.arrival_time;
 
         sample++;
         if (!q.empty())
         {
-          dt += q.front().service_time;
-        
+          dt += q.back().service_time;
         }
       }
     }
