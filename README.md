@@ -56,3 +56,8 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
 <p align="center">
   <img src="img/sample4.png">
 </p>
+
+### IPP/M/1/K のKをパラメータとしたときの利用率変化時の比較
+<p align="center">
+  <img src="img/sample4.png">
+</p>
