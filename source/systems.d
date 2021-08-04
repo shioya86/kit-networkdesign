@@ -8,20 +8,18 @@ const int n = 10;                 // 標本個数
 
 const int K_INF = 0;
 
-
-enum RET_FLAGS 
+struct ResCalc
 {
-  PLOSS,
-  WAIT_TIME,
-  WAIT_TIME_PER_PLOSS,
-  WAIT_TIME_CONFINTERV
+  real x;
+  real[] ploss;
+  real[] wait_time;
 }
 
-
-string calcQueueing(uint out_style, real arr_time, uint k=K_INF)
+ResCalc calcQueueing(real arr_time, uint k=K_INF)
 {
-  real[] ploss; 
-  real[] ans;
+  ResCalc res;
+  res.x = arr_time/serv_rate;
+
   foreach(i; 0..n)
   {
     DList!(Packet) q;   // パケット待ちキュー
@@ -68,41 +66,22 @@ string calcQueueing(uint out_style, real arr_time, uint k=K_INF)
         }
       }
     }
-    ploss ~= loss.to!real / (sample + loss);
-    ans ~= w_tmp/sample;
+    res.ploss ~= loss.to!real / (sample + loss);
+    res.wait_time ~= w_tmp/sample;
   }
 
-  /* 出力フォーマット */
-  string val;
-  switch(out_style)
-  {
-    case RET_FLAGS.PLOSS:
-      val = format("%e", ploss.calcSampleMean());
-      break;
-    case RET_FLAGS.WAIT_TIME:
-      val = format("%e", ans.calcSampleMean());
-      break;
-    case RET_FLAGS.WAIT_TIME_CONFINTERV:
-      const real sample_mean = ans.calcSampleMean();
-      val = format("%e %e", ans.calcSampleMean(), calcConfidenceInterval(ans, sample_mean));
-      break;
-    case RET_FLAGS.WAIT_TIME_PER_PLOSS:
-      val = format("%e", ans.calcSampleMean()/ploss.calcSampleMean());
-      break;
-    default:
-      val = format("%e", ploss.calcSampleMean());
-  }
 
-  return format("%e %s", arr_time/serv_rate, val);
+  return res; 
 }
 
 
 // IPP/M/1/K 待ち行列システム
-string calcIPPQueueing(real arr_time, uint k, real a1, real a2)
+ResCalc calcIPPQueueing(real arr_time, uint k, real a1, real a2)
 {
+  ResCalc res;
+  res.x = arr_time/serv_rate;
+
   real arr_time_on = arr_time*(a1+a2)/a2;
-  real[] ploss; 
-  real[] ans;
   bool stat;            // パケット到着のON/OFF状態
 
 
@@ -161,10 +140,9 @@ string calcIPPQueueing(real arr_time, uint k, real a1, real a2)
         }
       }
     }
-    ploss ~= loss.to!real / (sample + loss);
-    ans ~= w_tmp/sample;
+    res.ploss ~= loss.to!real / (sample + loss);
+    res.wait_time ~= w_tmp/sample;
   }
-  return format("%e %e", 
-    arr_time/serv_rate, 
-    ans.calcSampleMean()/ploss.calcSampleMean());
+
+  return res;
 }
