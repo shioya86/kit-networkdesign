@@ -41,6 +41,18 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
 <p align="center">
   <img  src="https://latex.codecogs.com/gif.latex?\lambda=\bar{\lambda}=\lambda_{ON}\times\frac{1/\alpha_1}{1/\alpha_1+1/\alpha_2}=\frac{\lambda_{ON}\alpha_2}{\alpha_1+\alpha_2}" />
 </p>
+
+### 利用率を変化させたときの平均滞在時間, パケット廃棄率の比較
 <p align="center">
   <img src="img/sample2.png">
+</p>
+
+### α1をパラメータとしたときの利用率変化時の比較
+<p align="center">
+  <img src="img/sample3.png">
+</p>
+
+### α2をパラメータとしたときの利用率変化時の比較
+<p align="center">
+  <img src="img/sample4.png">
 </p>
