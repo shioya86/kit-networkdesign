@@ -1,5 +1,5 @@
 set multiplot layout 2, 1
-set key left top
+set key inside left top
 set xtics nomirror
 set ytics nomirror
 set title 'M/M/1待ち行列システムの平均滞在時間のシミュレーション'

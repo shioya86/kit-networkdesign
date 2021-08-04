@@ -1,5 +1,5 @@
 set multiplot layout 2, 1
-set key right bottom
+set key inside left
 set xtics nomirror
 set ytics nomirror
 set logscale x
