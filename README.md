@@ -18,7 +18,7 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
 の関係を図示する.
 その際, 待ち行列理論から解析的に求まる値(式(38))と比較, 考察する.
 <p align="center">
-  <img src="data/sample1.png">
+  <img src="img/sample1.png">
 </p>
 
 ## IPP/M/1/K 待ち行列システムのシミュレーション
@@ -42,5 +42,5 @@ M/M/1 待ち行列システムの平均滞在時間 <img src="https://latex.code
   <img  src="https://latex.codecogs.com/gif.latex?\lambda=\bar{\lambda}=\lambda_{ON}\times\frac{1/\alpha_1}{1/\alpha_1+1/\alpha_2}=\frac{\lambda_{ON}\alpha_2}{\alpha_1+\alpha_2}" />
 </p>
 <p align="center">
-  <img src="data/sample2.png">
+  <img src="img/sample2.png">
 </p>
