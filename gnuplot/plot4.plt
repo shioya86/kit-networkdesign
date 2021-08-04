@@ -20,7 +20,7 @@ set ylabel 'パケット廃棄率'
 plot \
   'data/sample10.dat' using 1:2 with lines title 'α2=0.04', \
   'data/sample10.dat' using 1:3 with lines title 'α2=0.4', \
-  'data/sample10.dat' using 1:4 with lines title 'α2=0.8'
+  'data/sample10.dat' using 1:4 with lines title 'α2=0.8', \
   'data/sample6.dat' with points title 'M/M/1/K'
 set nologscale
 unset multiplot
