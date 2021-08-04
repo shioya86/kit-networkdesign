@@ -99,7 +99,6 @@ ResCalc calcIPPQueueing(real arr_time, uint k, real a1, real a2)
       /* 状態遷移 */
       const real trans_rate = (stat)? a1 : a2;
       stat = (getRndRate <= trans_rate)? !stat : stat;
-
       if ( q.empty() || at<dt)
       {
         /* パケットの発生 */

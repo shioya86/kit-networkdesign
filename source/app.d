@@ -29,7 +29,7 @@ void main()
   writeln("> task3");
   for(real i=50_000; i<=serv_rate*10; i*=1.1)
   {
-    res3 ~= calcIPPQueueing(i, 10, 0.3, 0.2);
+    res3 ~= calcIPPQueueing(i, 10, 0.04, 0.05);
   }
   
 
@@ -58,12 +58,14 @@ void main()
     fout2.writefln( "%e %e", e.x, e.wait_time.calcSampleMean() );
   }
 
-  /* IPP/M/1/Kの比較(平均滞在時間/パケット廃棄率) */
+
+  /* IPP/M/1/Kの比較(平均滞在時間) */
+
   auto fout3 = File("data/sample3.dat", "w");
 
   foreach(e; res3)
   {
-    fout3.writefln("%e %e", e.x, e.wait_time.calcSampleMean()/e.ploss.calcSampleMean() );
+    fout3.writefln("%e %e", e.x, e.wait_time.calcSampleMean() );
   }
 
 
@@ -71,15 +73,15 @@ void main()
 
   foreach(e; res4)
   {
-    fout4.writefln("%e %e", e.x, e.wait_time.calcSampleMean()/e.ploss.calcSampleMean() );
+    fout4.writefln("%e %e", e.x, e.wait_time.calcSampleMean() );
   }
-  /* IPP/M/1/Kの比較(平均滞在時間) */
 
-  auto fout5 = File("data/sample5.dat", "w");
+  /* IPP/M/1/Kの比較(パケット廃棄率) */
+    auto fout5 = File("data/sample5.dat", "w");
 
   foreach(e; res3)
   {
-    fout5.writefln("%e %e", e.x, e.wait_time.calcSampleMean() );
+    fout5.writefln("%e %e", e.x, e.ploss.calcSampleMean() );
   }
 
 
@@ -87,22 +89,6 @@ void main()
 
   foreach(e; res4)
   {
-    fout6.writefln("%e %e", e.x, e.wait_time.calcSampleMean() );
-  }
-
-  /* IPP/M/1/Kの比較(パケット廃棄率) */
-    auto fout7 = File("data/sample7.dat", "w");
-
-  foreach(e; res3)
-  {
-    fout7.writefln("%e %e", e.x, e.ploss.calcSampleMean() );
-  }
-
-
-  auto fout8 = File("data/sample8.dat", "w");
-
-  foreach(e; res4)
-  {
-    fout8.writefln("%e %e", e.x, e.ploss.calcSampleMean() );
+    fout6.writefln("%e %e", e.x, e.ploss.calcSampleMean() );
   }
 }
