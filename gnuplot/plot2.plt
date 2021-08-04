@@ -15,11 +15,11 @@ plot 'data/sample3.dat' with lines title 'IPP/M/1/K', \
 set title 'パケット廃棄率の比較'
 set xlabel '利用率ρ'
 set ylabel 'パケット廃棄率'
+
 plot 'data/sample5.dat' with lines title 'IPP/M/1/K', \
   'data/sample5.dat' with points notitle, \
   'data/sample6.dat' with lines title 'M/M/1/K', \
   'data/sample6.dat' with points notitle
-
 
 set nologscale
 unset multiplot
