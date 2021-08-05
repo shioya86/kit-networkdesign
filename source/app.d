@@ -4,7 +4,7 @@ import tools;
 
 void main()
 {
-  const uint flag = 0b0110000;
+  const uint flag = 0b0000001;
 
   /* 課題1 */
   if (flag & 0b0000001)
@@ -77,7 +77,7 @@ void runTask1(string filename)
 void runTask2(string filename)
 {
   ResCalc[] res;
-  for(real i=50_000; i<=serv_rate; i*=1.01)
+  for(real i=100; i<=serv_rate; i*=1.3)
   {
     const real val = 1.0/( serv_rate*(1.0-i/serv_rate) );
     res ~= ResCalc(i/serv_rate, null, [val]);
@@ -95,7 +95,7 @@ void runTask2(string filename)
 void runTask3(string filename1, string filename2)
 {
   ResCalc[] res;
-  for(real i=50_000; i<=serv_rate; i*=1.1)
+  for(real i=100; i<=serv_rate; i*=1.3)
   {
     res ~= calcIPPQueueing(i, 10, 0.04, 0.04);
   }
@@ -114,7 +114,7 @@ void runTask3(string filename1, string filename2)
 void runTask4(string filename1, string filename2)
 {
   ResCalc[] res;
-  for(real i=50_000; i<=serv_rate; i*=1.1)
+  for(real i=100; i<=serv_rate; i*=1.3)
   {
     res ~= calcQueueing(i, 10);
   }
@@ -137,7 +137,7 @@ void runTask5(string filename1, string filename2)
   {
     i.writeln;
     int cnt;
-    for(real j=50_000; j<=serv_rate; j*=1.1)
+    for(real j=100; j<=serv_rate; j*=1.3)
     {
       auto tmp = calcIPPQueueing(j, 10, i, 0.04);
       if(i==0.4)
@@ -178,7 +178,7 @@ void runTask6(string filename1, string filename2)
   {
     i.writeln;
     int cnt;
-    for(real j=50_000; j<=serv_rate; j*=1.1)
+    for(real j=100; j<=serv_rate; j*=1.3)
     {
       auto tmp = calcIPPQueueing(j, 10, 0.04, i);
       if(i==0.4)
@@ -218,7 +218,7 @@ void runTask7 (string filename1, string filename2)
     i.writeln;
     ResCalc[] res;
 
-    for (real j=50_000; j<=serv_rate; j*=1.1)
+    for (real j=100; j<=serv_rate; j*=1.3)
     {
       res ~= calcIPPQueueing(j, i, 0.04, 0.04);
     }
