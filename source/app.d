@@ -4,7 +4,7 @@ import tools;
 
 void main()
 {
-  const uint flag = 0b1000000;
+  const uint flag = 0b1111111;
 
   /* 課題1 */
   if (flag & 0b0000001)
@@ -180,7 +180,7 @@ void runTask6(string filename1, string filename2)
     ResCalc[] res;
     for(real j=50_000; j<=serv_rate; j*=1.1)
     {
-      res ~= calcIPPQueueing(j, 10, i, 0.04);
+      res ~= calcIPPQueueing(j, 10, 0.04, i);
     }
     res_arr ~= res;
   }
