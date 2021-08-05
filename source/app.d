@@ -4,7 +4,7 @@ import tools;
 
 void main()
 {
-  const uint flag = 0b1111111;
+  const uint flag = 0b0110000;
 
   /* 課題1 */
   if (flag & 0b0000001)
@@ -131,82 +131,82 @@ void runTask4(string filename1, string filename2)
 
 void runTask5(string filename1, string filename2)
 {
-  ResCalc[][] res_arr;
-
+  struct Val { real x; real v1; real v2;}
+  Val[] res_wt, res_pl;
   foreach(i; [0.4, 0.8])
   {
     i.writeln;
-    ResCalc[] res;
+    int cnt;
     for(real j=50_000; j<=serv_rate; j*=1.1)
     {
-      res ~= calcIPPQueueing(j, 10, i, 0.04);
+      auto tmp = calcIPPQueueing(j, 10, i, 0.04);
+      if(i==0.4)
+      {
+        res_wt ~= Val(tmp.x, tmp.wait_time.calcSampleMean());
+        res_pl ~= Val(tmp.x, tmp.ploss.calcSampleMean());
+      }
+      else 
+      {
+        res_wt[cnt].v2 = tmp.wait_time.calcSampleMean();
+        res_pl[cnt].v2 = tmp.ploss.calcSampleMean();
+      }
+      cnt++;
     }
-    res_arr ~= res;
   }
 
   auto fout1 = File(filename1, "w");
   fout1.writeln("# x y1 y2 y3");
-  foreach(i; 0..res_arr[0].length)
+  foreach(e; res_wt)
   {
-    real[] vals;
-    foreach(j; 0..res_arr.length)
-    {
-      vals ~= res_arr[j][i].wait_time.calcSampleMean();
-    }
-    fout1.writefln("%e %s", res_arr[0][i].x, vals.map!(a=>format("%e", a)).join(" ") );
+    fout1.writefln("%e %e %e", e.x, e.v1, e.v2);
   }
 
   auto fout2 = File(filename2, "w");
   fout2.writeln("# x y1 y2 y3");
-  foreach(i; 0..res_arr[0].length)
+  foreach(e; res_pl)
   {
-    real[] vals;
-    foreach(j; 0..res_arr.length)
-    {
-      vals ~= res_arr[j][i].ploss.calcSampleMean();
-    }
-    fout2.writefln("%e %s", res_arr[0][i].x, vals.map!(a=>format("%e", a)).join(" ") );
+    fout2.writefln("%e %e %e", e.x, e.v1, e.v2);
   }
 }
 
 
 void runTask6(string filename1, string filename2)
 {
-  ResCalc[][] res_arr;
-
+  struct Val { real x; real v1; real v2;}
+  Val[] res_wt, res_pl;
   foreach(i; [0.4, 0.8])
   {
     i.writeln;
-    ResCalc[] res;
+    int cnt;
     for(real j=50_000; j<=serv_rate; j*=1.1)
     {
-      res ~= calcIPPQueueing(j, 10, 0.04, i);
+      auto tmp = calcIPPQueueing(j, 10, 0.04, i);
+      if(i==0.4)
+      {
+        res_wt ~= Val(tmp.x, tmp.wait_time.calcSampleMean());
+        res_pl ~= Val(tmp.x, tmp.ploss.calcSampleMean());
+      }
+      else 
+      {
+        res_wt[cnt].v2 = tmp.wait_time.calcSampleMean();
+        res_pl[cnt].v2 = tmp.ploss.calcSampleMean();
+      }
+      cnt++;
     }
-    res_arr ~= res;
   }
 
   auto fout1 = File(filename1, "w");
   fout1.writeln("# x y1 y2 y3");
-  foreach(i; 0..res_arr[0].length)
+  foreach(e; res_wt)
   {
-    real[] vals;
-    foreach(j; 0..res_arr.length)
-    {
-      vals ~= res_arr[j][i].wait_time.calcSampleMean();
-    }
-    fout1.writefln("%e %s", res_arr[0][i].x, vals.map!(a=>format("%e", a)).join(" ") );
+    fout1.writefln("%e %e %e", e.x, e.v1, e.v2);
   }
 
   auto fout2 = File(filename2, "w");
   fout2.writeln("# x y1 y2 y3");
-  foreach(i; 0..res_arr[0].length)
+  foreach(e; res_pl)
   {
-    real[] vals;
-    foreach(j; 0..res_arr.length)
-    {
-      vals ~= res_arr[j][i].ploss.calcSampleMean();
-    }
-    fout2.writefln("%e %s", res_arr[0][i].x, vals.map!(a=>format("%e", a)).join(" ") );
+    fout2.writefln("%e %e %e", e.x, e.v1, e.v2);
   }
 }
 
