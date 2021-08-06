@@ -4,10 +4,10 @@ import tools;
 
 void main()
 {
-  const uint flag = 0b0000001;
+  const uint flag = 0b1111111;
 
   /* 課題1 */
-  if (flag & 0b0000001)
+  if (flag & 0b1000000)
   {
     writeln("> task1");
     runTask1("data/sample1.dat");
@@ -60,16 +60,19 @@ void main()
 void runTask1(string filename)
 {
     ResCalc[] res;
-  for(real i=50_000; i<=serv_rate; i*=1.01)
+  for(real i=0; i<=1; i+=0.05)
   {
-    res ~= calcQueueing(i);
+    res ~= calcQueueing(serv_rate*i);
   }
 
   auto fout = File(filename, "w");
   foreach(e; res)
   {
     auto sample_mean = e.wait_time.calcSampleMean();
-    fout.writefln( "%e %e %e", e.x, sample_mean, calcConfidenceInterval(e.wait_time, sample_mean) );
+    fout.writefln( "%e %e %e", 
+      e.x, 
+      sample_mean, 
+      calcConfidenceInterval(e.wait_time, sample_mean) );
   }
 }
 
@@ -77,10 +80,11 @@ void runTask1(string filename)
 void runTask2(string filename)
 {
   ResCalc[] res;
-  for(real i=100; i<=serv_rate; i*=1.3)
+  for(real i=0; i<=1.0; i+=0.01)
   {
-    const real val = 1.0/( serv_rate*(1.0-i/serv_rate) );
-    res ~= ResCalc(i/serv_rate, null, [val]);
+    const real val = 1.0/( serv_rate*(1-i) );
+    if(val==real.nan) break;
+    res ~= ResCalc(i, null, [val]);
   }
 
   auto fout = File(filename, "w");
@@ -95,9 +99,10 @@ void runTask2(string filename)
 void runTask3(string filename1, string filename2)
 {
   ResCalc[] res;
-  for(real i=100; i<=serv_rate; i*=1.3)
+  for(real i=0; i<=1.0; i+=0.01)
   {
-    res ~= calcIPPQueueing(i, 10, 0.04, 0.04);
+    i.writeln;
+    res ~= calcIPPQueueing(serv_rate*i, 10, 0.04, 0.04);
   }
   
   auto fout1 = File(filename1, "w");
@@ -114,9 +119,9 @@ void runTask3(string filename1, string filename2)
 void runTask4(string filename1, string filename2)
 {
   ResCalc[] res;
-  for(real i=100; i<=serv_rate; i*=1.3)
+  for(real i=0; i<=1.0; i+=0.01)
   {
-    res ~= calcQueueing(i, 10);
+    res ~= calcQueueing(serv_rate*i, 10);
   }
 
   auto fout1 = File(filename1, "w");
@@ -137,9 +142,9 @@ void runTask5(string filename1, string filename2)
   {
     i.writeln;
     int cnt;
-    for(real j=100; j<=serv_rate; j*=1.3)
+    for(real j=0.0; j<=1.0; j+=0.01)
     {
-      auto tmp = calcIPPQueueing(j, 10, i, 0.04);
+      auto tmp = calcIPPQueueing(serv_rate*j, 10, i, 0.04);
       if(i==0.4)
       {
         res_wt ~= Val(tmp.x, tmp.wait_time.calcSampleMean());
@@ -178,9 +183,9 @@ void runTask6(string filename1, string filename2)
   {
     i.writeln;
     int cnt;
-    for(real j=100; j<=serv_rate; j*=1.3)
+    for(real j=0.0; j<=1.0; j+=0.01)
     {
-      auto tmp = calcIPPQueueing(j, 10, 0.04, i);
+      auto tmp = calcIPPQueueing(serv_rate*j, 10, 0.04, i);
       if(i==0.4)
       {
         res_wt ~= Val(tmp.x, tmp.wait_time.calcSampleMean());
@@ -212,40 +217,46 @@ void runTask6(string filename1, string filename2)
 
 void runTask7 (string filename1, string filename2)
 {
-  ResCalc[][] res_arr;
-  foreach(i; [5, 50])
+  struct Val { real x; real v1; real v2; real v3;}
+  Val[] res_wt, res_pl;
+  foreach(i; [5, 50, 100])
   {
     i.writeln;
-    ResCalc[] res;
-
-    for (real j=100; j<=serv_rate; j*=1.3)
+    int cnt;
+    for (real j=0.0; j<=1.0; j+=0.01)
     {
-      res ~= calcIPPQueueing(j, i, 0.04, 0.04);
+      auto tmp = calcIPPQueueing(serv_rate*j, i, 0.04, 0.04);
+      if (i==5)
+      {
+        res_wt ~= Val(tmp.x, tmp.wait_time.calcSampleMean());
+        res_pl ~= Val(tmp.x, tmp.ploss.calcSampleMean());
+      }
+      else if (i==50)
+      {
+        res_wt[cnt].v2 = tmp.wait_time.calcSampleMean();
+        res_pl[cnt].v2 = tmp.ploss.calcSampleMean();
+      }
+      else
+      {
+        res_wt[cnt].v3 = tmp.wait_time.calcSampleMean();
+        res_pl[cnt].v3 = tmp.ploss.calcSampleMean();
+      }
+      cnt++;
     }
-    res_arr ~= res;
   }
+
 
   auto fout1 = File(filename1, "w");
   fout1.writeln("# x y1 y2 y3");
-  foreach (i; 0..res_arr[0].length)
+  foreach(e; res_wt)
   {
-    real[] vals;
-    foreach (j; 0..res_arr.length)
-    {
-      vals ~= res_arr[j][i].wait_time.calcSampleMean();
-    }
-    fout1.writefln("%e %s", res_arr[0][i].x, vals.map!(a=>format("%e", a)).join(" ") );
+    fout1.writefln("%e %e %e %e", e.x, e.v1, e.v2, e.v3);
   }
 
   auto fout2 = File(filename2, "w");
   fout2.writeln("# x y1 y2 y3");
-  foreach (i; 0..res_arr[0].length)
+  foreach(e; res_pl)
   {
-    real[] vals;
-    foreach (j; 0..res_arr.length)
-    {
-      vals ~= res_arr[j][i].ploss.calcSampleMean();
-    }
-    fout2.writefln("%e %s", res_arr[0][i].x, vals.map!(a=>format("%e", a)).join(" ") );
+    fout2.writefln("%e %e %e %e", e.x, e.v1, e.v2, e.v3);
   }
 }

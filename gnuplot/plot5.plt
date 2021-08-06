@@ -1,8 +1,9 @@
+
 set multiplot layout 2, 1
 set key outside right
 set xtics nomirror
 set ytics nomirror
-set logscale x
+set nologscale xy
 
 set title '平均滞在時間の比較'
 set xlabel '利用率ρ'

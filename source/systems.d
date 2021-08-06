@@ -15,10 +15,12 @@ struct ResCalc
   real[] wait_time;
 }
 
-ResCalc calcQueueing(real arr_time, uint k=K_INF)
+ResCalc calcQueueing(real arv_time, uint k=K_INF)
 {
+  if (arv_time==0.0) return ResCalc(0.0, [0.0], [1/serv_rate]);
+
   ResCalc res;
-  res.x = arr_time/serv_rate;
+  res.x = arv_time/serv_rate;
 
   foreach(i; 0..n)
   {
@@ -49,7 +51,7 @@ ResCalc calcQueueing(real arr_time, uint k=K_INF)
         {
           q.insertFront(curr_packet);
         }
-        at += getServDistr(arr_time, getRndRate());
+        at += getServDistr(arv_time, getRndRate());
       }
       else
       {
@@ -75,16 +77,16 @@ ResCalc calcQueueing(real arr_time, uint k=K_INF)
 }
 
 
-// IPP/M/1/K 待ち行列システム
-ResCalc calcIPPQueueing(real arr_time, uint k, real a1, real a2)
+ResCalc calcIPPQueueing(real arv_time, uint k=K_INF, real a1=0.0, real a2=0.0)
 {
+  if (arv_time==0.0) return ResCalc(0.0, [0.0], [1/serv_rate]);
+  a1 *= serv_rate;
+  a2 *= serv_rate;
   ResCalc res;
-  res.x = arr_time/serv_rate;
+  res.x = arv_time/serv_rate;
 
-  real arr_time_on = arr_time*(a1+a2)/a2;
-  bool stat;            // パケット到着のON/OFF状態
-
-
+  real arv_time_on = arv_time*(a1 + a2)/a2;
+  bool stat = false;
   foreach(i; 0..n)
   {
     DList!(Packet) q;   // パケット待ちキュー
@@ -92,28 +94,35 @@ ResCalc calcIPPQueueing(real arr_time, uint k, real a1, real a2)
     real w_tmp 	= 0.0;  // パケットの queue における滞在時間の総和
     real at     = 0.0;  // 到着時間軸
     real dt     = 0.0;  // 退去時間軸
+    real ot     = 0.0;  // ON状態時間
     uint sample;        // サンプルパケット数
 
     while (  sample < packet_len )
     {
-      /* 状態遷移 */
-      const real trans_rate = (stat)? a1 : a2;
-      stat = (getRndRate <= trans_rate)? !stat : stat;
-      if ( q.empty() || at<dt)
+
+      if (stat && ot<at)
+      {
+        stat = false;
+      }
+
+
+      if (q.empty() || at<dt)
       {
         /* パケットの発生 */
         Packet curr_packet = Packet(at, getArrvintr(serv_rate, getRndRate()));
-
         if (!stat)
         {
-          /* 状態がOFFであれば, パケットは到着しない */
+          // OFF状態
+          at += getServDistr(a2, getRndRate());
+          stat = true;
+          ot = at + getServDistr(a1, getRndRate());
         }
-        else if (q.array().length==k)
+        else if (k!=K_INF && q.array().length==k)
         {
           /* パケットロス */
           loss++;
         }
-        else if( q.empty() )
+        else if(q.empty)
         {
           q.insertFront(curr_packet);
           dt = at + curr_packet.service_time;
@@ -122,7 +131,8 @@ ResCalc calcIPPQueueing(real arr_time, uint k, real a1, real a2)
         {
           q.insertFront(curr_packet);
         }
-        at += getServDistr(arr_time_on, getRndRate());
+        // 次のパケット
+        at += getServDistr(arv_time_on, getRndRate());
       }
       else
       {
@@ -143,5 +153,6 @@ ResCalc calcIPPQueueing(real arr_time, uint k, real a1, real a2)
     res.wait_time ~= w_tmp/sample;
   }
 
-  return res;
+
+  return res; 
 }
